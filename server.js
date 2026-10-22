@@ -228,6 +228,17 @@ io.on('connection', (socket) => {
     if (room && socket.data.role === 'player' && socket.data.roomCode === room.code) bombs.submit(room, io, socket.data.playerId, dx, dy);
   });
 
+socket.on('start_isometric_tetris', (roomId) => {
+        const gameInstance = new IsometricTetrisGame(io, roomId);
+        const roomSockets = Array.from(io.sockets.adapter.rooms.get(roomId) || []);
+        gameInstance.init(roomSockets);
+
+        // Escuchar acciones de cada jugador durante este minijuego
+        socket.on('isometric_tetris_action', (action) => {
+            gameInstance.handlePlayerAction(socket.id, action);
+        });
+    });
+
   socket.on('disconnect', () => {
     const code = socket.data.roomCode;
     if (!code) return;
