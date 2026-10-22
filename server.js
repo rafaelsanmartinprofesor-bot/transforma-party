@@ -6,6 +6,7 @@ const { Server } = require('socket.io');
 const crypto = require('crypto');
 const path = require('path');
 const bombs = require('./games/bombs');
+const IsometricTetrisGame = require('./games/isometric-tetris');
 
 const app = express();
 const server = http.createServer(app);
